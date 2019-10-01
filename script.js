@@ -1,10 +1,10 @@
 var plannerText = $("#planner-text");
-var saveBtn = $(".save");
+var saveBtn = $(".saveBtn");
 var $plannerOutput = $(".planner-output");
 var $currentDayElem = $("#currentDay");
 
 
-var todos = ["Learn HTML", "Learn CSS", "Learn JavaScript"];
+var todos = [""];
 
 currentDayf();
 renderPlanner();
@@ -14,20 +14,23 @@ function currentDayf () {
         $currentDayElem.text(currentDay.format("MMMM Do, YYYY"));
 };
 
+
+
 function renderPlanner () {
     $plannerOutput.html(" ");
 
     for (var i = 0; i < todos.length; i++) {
         var todo = todos[i];
-    
-        
-        $("<p>").textContent(todo);
-        $plannerOutput.append($("<p>"));
+        var td = $("<td>", "td")
+        td.text(todo);
+        $plannerOutput.append(td);
       }
-}
+};
 
 saveBtn.on("click", function(event) {
     event.preventDefault();
-    var plan = put.value;
-})
-
+    var plan = plannerText.val();
+    plan = plan.trim();
+    todos.push(plan);
+    renderPlanner();
+  });
