@@ -1,52 +1,42 @@
-var plannerText = $("#planner-text");
+
+var plannerText = $(".planner-text");
 var saveBtn = $(".saveBtn");
-var $plannerOutput = $(".planner-output");
+// var $plannerOutput = $(".planner-output");
 var $currentDayElem = $("#currentDay");
 
 
-var todos = [];
-
+var plans = [];
+storage();
+saveinput();
 currentDayf();
-renderPlanner();
-init();
+
 
 function currentDayf () {
         var currentDay = moment();
         $currentDayElem.text(currentDay.format("MMMM Do, YYYY"));
 };
 
-function renderPlanner () {
-    $plannerOutput.append(" ");
-
-    for (var i = 0; i < todos.length; i++) {
-        var todo = todos[i];
-        //var $targetID = $("#"+stringify)
-        // var td = $("<td>")
-        $plannerOutput.append(todo);
-        // $plannerOutput.attr(td);
-        //var $targetid = $("#"+stringify(todo.time))
-      }
+function storage (){
+    plans = JSON.parse(localStorage.getItem("plans"));
+    if(plans == null){
+        plans = [" ", " "," ", " ", " ", " ", " ", " "];
+    }
 };
 
-  function init() {
-      var plansStr = localStorage.getItem("todos");
-    //   if (!(plansStr === null || plansStr === "")){
-    //       todos = JSON.stringify(plansStr);
-    //   }
-      storePlans();
-      renderPlanner();
-  }
+function saveinput () {
+    for (var i = 0; i < plans.length; i++){
+        var position = $("#"+i)
+        position.val(plans[i]);
+    }
+}
 
-  function storePlans() {
-      localStorage.setItem("todos", JSON.stringify(todos));
-  }
 
-  saveBtn.on("click", function(event) {
-    event.preventDefault();
-    localStorage.clear()
-    var plan = plannerText.val().trim();
-    console.log(plan)
-    todos.push(plan);
-    renderPlanner();
-    storePlans();
+  saveBtn.click(function() {
+      var value = ($(this).attr("value"));
+      //variable input is pulling the value of "the thing you clicked on" below
+      var input = $("#"+value)
+      console.log(input);
+      //plans is the array where we're hold the input
+    plans[value] = input.val();
+    localStorage.setItem("plans", JSON.stringify(plans));
   });
